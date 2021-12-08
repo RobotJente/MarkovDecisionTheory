@@ -22,17 +22,17 @@ def calc_cost_use_trailer(worker_loc, trailer_loc, states):
         return 200
 
 # given an action, find the total expected reward of this action
-def calc_total_expected_reward(current_state, action, transitions, action_results):
+def calc_total_expected_reward(current_state, action, transitions, action_results, states):
     # find direct costs of the action (moving the trailer)
     cost = 0
     future_trailer_loc = action_results[action]
     cost += calc_cost_move_trailer(current_loc=current_state, future_loc= future_trailer_loc)
 
     # find expected rewards of the action by using the transition probabilities
-    for i in enumerate(transitions):
+    for i in range(len(transitions)):
         # sum of expected rewards: prob of moving to state i * cost of trailer at state i
-        cost += calc_cost_use_trailer(worker_loc=transitions[i], trailer_loc=future_trailer_loc)*transitions[current_state][0]
-
+        cost += calc_cost_use_trailer(worker_loc=states[i], trailer_loc=future_trailer_loc, states = states)*transitions[current_state][i]
+    return cost
 # for example, if we are in state 4, we cannot go to state 2 and 3, we can only go to state 2 or stay in state 4
 def build_transition_matrix(states):
     transitions = {}
