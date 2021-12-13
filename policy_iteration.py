@@ -52,6 +52,8 @@ while(err>epsilon*(1-discount)/(2*discount)):
     err=np.norm(v_old-v)
 
 
+print(v)
+print(pi)
 #pi is the epsilon optimal policy
 
 
