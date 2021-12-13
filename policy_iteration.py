@@ -47,7 +47,7 @@ while(err>epsilon*(1-discount)/(2*discount)):
                         P[idx][matrix_column_index]=(action_results[a]==future_trailer_location)*transitions[nodes.index(current_worker_loc)][nodes.index(future_worker_loc)]
                         matrix_column_index+=1
             v[vector_index]=np.max(reward_vector+discount*np.dot(P,v))
-            pi[vector_index]=action[np.argmax(v2)]
+            pi[vector_index]=action[np.argmax(v)]
             vector_index+=1
     err=np.norm(v_old-v)
 
