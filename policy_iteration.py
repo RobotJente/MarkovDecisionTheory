@@ -59,14 +59,6 @@ print(pi)
 
 
 
-
-
-
-
-
-
-
-
 #POLICY_ITERATION
 
 #we have to initialize a vector of 16 entries that represents our vale (total expected reward)
@@ -91,22 +83,24 @@ while not converged:
     vector_index=0
     for current_trailer_loc in nodes:
             for current_worker_loc in nodes:
-                reward[i]=calc_immediate_expected_reward(current_trailer_loc, current_worker_loc, pi[i], transitions, action_results, nodes)
+                reward[vector_index]=calc_immediate_expected_reward(current_trailer_loc, current_worker_loc, pi[index_vector], transitions, action_results, nodes)
                 vector_index+=1
     #ones i have my reward vector i have to compute the trasition probability matrix
     matrix_row_index=0
     P=np.zeros(16,16)
+    #for cycle foe each current state
     for current_trailer_loc in nodes:
             for current_worker_loc in nodes:
                 matrix_column_index=0
+                #for cycle for each future state
                 for future_trailer_loc in nodes:
                     for future_worker_loc in nodes:
-                        P[matrix_row_index][matrix_column_index]=(action_results[pi[matrix_row_index]]==future_trailer_location)*transitions[nodes.index(current_worker_loc)][nodes.index(future_trailer_loc)]
+                        P[matrix_row_index][matrix_column_index]=(action_results[pi[matrix_row_index]]==future_trailer_location)*transitions[nodes.index(current_worker_loc)][nodes.index(future_worker_loc)]
                         matrix_column_index+=1
                 matrix_row_index+=1
     #I built our transition matrix
     # Policy evaluation:
-    v = np.dot(np.linalg.inv(np.eye(16) - 0.95*P), reward_vec)
+    v = np.dot(np.linalg.inv(np.eye(16) - 0.95*P), reward)
 
 
     #this is the value of our policy
@@ -119,7 +113,7 @@ while not converged:
                 reward_vector=np.zeros(4,1)
                 P_componentwise=np.zerso(4,16)
                 for idx,a in eumerate(action):
-                    reward[idx]=calc_immediate_expected_reward(current_trailer_loc, current_worker_loc, a, transitions, action_results, nodes)
+                    reward_vector[idx]=calc_immediate_expected_reward(current_trailer_loc, current_worker_loc, a, transitions, action_results, nodes)
                     matrix_column_index=0
                     for future_trailer_loc in nodes:
                         for future_worker_loc in nodes:
