@@ -38,7 +38,7 @@ while(err>epsilon*(1-discount)/(2*discount)):
         for current_worker_loc in nodes:
             reward_vector=np.zeros(4,1)
             #probability matrix for that action
-            P=np.zerso(4,16)
+            P=np.zeros(4,16)
             for idx,a in eumerate(action):
                 reward_vector[idx]=calc_immediate_expected_reward(current_trailer_loc, current_worker_loc, a, transitions, action_results, nodes)
                 matrix_column_index=0
