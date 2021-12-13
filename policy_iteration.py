@@ -40,7 +40,7 @@ while(err>epsilon*(1-discount)/(2*discount)):
             #probability matrix for that action
             P=np.zerso(4,16)
             for idx,a in eumerate(action):
-                reward[idx]=calc_immediate_expected_reward(current_trailer_loc, current_worker_loc, a, transitions, action_results, nodes)
+                reward_vector[idx]=calc_immediate_expected_reward(current_trailer_loc, current_worker_loc, a, transitions, action_results, nodes)
                 matrix_column_index=0
                 for future_trailer_loc in nodes:
                     for future_worker_loc in nodes:
