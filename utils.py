@@ -26,20 +26,20 @@ def calc_immediate_expected_reward(current_trailer_loc, current_worker_loc, acti
     # find direct costs of the action (moving the trailer)
     cost = 0
     future_trailer_loc = action_results[action]
-    cost += calc_cost_move_trailer(current_trailer_loc=current_trailer_location, future_trailer_loc= future_trailer_loc)
+    cost += calc_cost_move_trailer(current_trailer_loc=current_trailer_loc, future_trailer_loc= future_trailer_loc)
 
     # find expected rewards of the action by using the transition probabilities
     for i in range(len(nodes)):
         # sum of expected rewards: prob of moving to state i * cost of trailer at state i
-        cost += calc_cost_use_trailer(worker_loc=nodes[i], trailer_loc=future_trailer_loc, nodes = nodes)*workers_transition_probability[nodes.index(current_worker_location)][i]
+        cost += calc_cost_use_trailer(worker_loc=nodes[i], trailer_loc=future_trailer_loc, nodes = nodes)*workers_transition_probability[nodes.index(current_worker_loc)][i]
     return cost
 
 #this is useless now
-# for example, if we are in state 4, we cannot go to state 2 and 3, we can only go to state 2 or stay in state 4
-def build_transition_matrix(nodes):
-    transitions = {}
-    transitions[nodes[0]] = (0.1, 0.3, 0.3, 0.3)
-    transitions[nodes[1]] = (0, 0.5, 0.5, 0)
-    transitions[nodes[2]] = (0, 0, 0.8, 0.2)
-    transitions[nodes[3]] = (0.4, 0, 0, 0.6)
-    return transitions
+# # for example, if we are in state 4, we cannot go to state 2 and 3, we can only go to state 2 or stay in state 4
+# def build_transition_matrix(nodes):
+#     transitions = {}
+#     transitions[nodes[0]] = (0.1, 0.3, 0.3, 0.3)
+#     transitions[nodes[1]] = (0, 0.5, 0.5, 0)
+#     transitions[nodes[2]] = (0, 0, 0.8, 0.2)
+#     transitions[nodes[3]] = (0.4, 0, 0, 0.6)
+#     return transitions
