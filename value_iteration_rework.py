@@ -23,6 +23,17 @@ while (err > epsilon * (1 - discount) / (2 * discount)):
     # track old value to determine convergence. use deepcopy since python normally tracks the reference, not the value
     v_old = copy.deepcopy(v)
 
+    state_index = 0
+    for current_trailer_loc in nodes:
+        for current_worker_loc in nodes:
+            # find all possible rewards from actions:
+            reward_vector = []
+            for action in actions:
+                r = calc_immediate_expected_reward(current_trailer_loc, current_worker_loc, action, transitions, action_results, nodes)
+                reward_vector.append(r)
+            v[state_index] = np.max(reward_vector)
+
+
     vector_index = 0
     for current_trailer_loc in nodes:
         for current_worker_loc in nodes:
@@ -44,7 +55,7 @@ while (err > epsilon * (1 - discount) / (2 * discount)):
                         matrix_column_index += 1
             # For each state, choose v to be the result of the action with the highest reward
             v[vector_index] = np.max(reward_vector + discount * np.dot(P, v))
-            print(P.shape)
+
             # Keep track of the policy only for display results (not used in calculations)
             pi[vector_index] = actions[np.argmax(reward_vector + discount * np.dot(P, v))]
             vector_index += 1
