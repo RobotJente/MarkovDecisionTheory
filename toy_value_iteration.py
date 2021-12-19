@@ -1,6 +1,5 @@
 import numpy as np
 from utils import calc_immediate_expected_reward
-from main import action_results
 import copy
 
 # Find the probability of moving to a certain state "future_state", given that we are in state "current_state" and
@@ -40,21 +39,26 @@ dim_states = transitions.shape[0]
 # initialize v for each state
 v = np.ones([dim_states**2, 1])
 err = 1
-pi = [None for i in range(len(v))]  # here we will save the policies
+pi = {} #[None for i in range(len(v))]  # here we will save the policies
 nodes = [1, 2]
 actions = ("Move to site 1", "Move to site 2")
 n = 0
 # encode a way to find the result of an action (in this case, the actions bring the trailer from site i to site j
 action_results = {}
+helper_v = {}
 for i in range(len(actions)):
     action_results[actions[i]] = i+1
 
+for init_state_worker in nodes:
+    for init_state_trailer in nodes:
+        helper_v[(init_state_worker, init_state_trailer)] = 1000
 
 while (err > epsilon * (1 - discount) / (2 * discount)):
     n += 1
 
     # track old value to determine convergence. use deepcopy since python normally tracks the reference, not the value
     v_old = copy.deepcopy(v)
+    helper_v_old = copy.deepcopy(helper_v)
 
     # state_index corresponds to the current state being evaluated. For example, state_index=5 corresponds to the state (3,2) in this problem)
     state_index = 0
@@ -64,21 +68,21 @@ while (err > epsilon * (1 - discount) / (2 * discount)):
 
             for action in actions:
                 r = calc_immediate_expected_reward(current_trailer_loc, current_worker_loc, action, transitions, action_results, nodes)
+
                 for worker_loc in nodes:
                     for trailer_loc in nodes:
-                        r += discount*prob_mat((current_worker_loc, current_trailer_loc), (worker_loc, trailer_loc), action, transitions, action_results)*v_old[state_index]
+                        r += discount*prob_mat((current_worker_loc, current_trailer_loc), (worker_loc, trailer_loc), action, transitions, action_results)*helper_v_old[(worker_loc, trailer_loc)]
                 reward_vector.append(r)
 
             # For each state, choose v to be the result of the action with the highest reward
-            v[state_index] = np.max(reward_vector)
-
+            v[state_index] = np.min(reward_vector)
+            helper_v[(current_worker_loc, current_trailer_loc)] = copy.deepcopy(v[state_index])
             # we have now traversed a state
             state_index += 1
 
     err = np.linalg.norm(v_old - v)
     print(err, n)
 
-state_index = 0
 for current_trailer_loc in nodes:
     for current_worker_loc in nodes:
         reward_vector = []
@@ -87,23 +91,19 @@ for current_trailer_loc in nodes:
                                                action_results, nodes)
             for worker_loc in nodes:
                 for trailer_loc in nodes:
-                    print(v[state_index])
                     r += discount * prob_mat((current_worker_loc, current_trailer_loc), (worker_loc, trailer_loc),
-                                             action, transitions, action_results) * v[state_index]
+                                             action, transitions, action_results) * helper_v[(worker_loc, trailer_loc)]
             reward_vector.append(r)
         print(reward_vector, "reward vec")
         # For each state, choose v to be the result of the action with the highest reward
-        pi[state_index] = actions[np.argmax(reward_vector)]
+        pi[(current_worker_loc, current_trailer_loc)] = actions[np.argmin(reward_vector)]
 
         # we have now traversed a state
-        state_index += 1
 
 print(pi)
 
-
-
-print(v)
-print(pi)
+print(calc_immediate_expected_reward(nodes[0], nodes[0], actions[1], transitions, action_results, nodes), "TOTAL REWARD")
+print(helper_v)
 # pi is the epsilon optimal policy
 
 
