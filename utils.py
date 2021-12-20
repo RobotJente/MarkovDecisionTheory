@@ -19,7 +19,7 @@ def calc_cost_use_trailer(worker_loc, trailer_loc, nodes):
         else:
             return 100
     else:
-        return 200
+        return 200 # This line needs to be adjusted for the toy problem, or we need to adjust the toy problem
 
 # for each state (current_trailer_location, current_worker_location) and for each action compute the expercted immediate reward
 def calc_immediate_expected_reward(current_trailer_loc, current_worker_loc, action, workers_transition_probability, action_results, nodes):

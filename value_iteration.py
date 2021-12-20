@@ -3,7 +3,12 @@ from utils import calc_immediate_expected_reward
 from main import action_results, transitions
 import copy
 
+#########################
+# I dont think we need this anymore if my version works
+#########################
 # value iteration algorithm
+
+
 
 # initialization
 epsilon = 1e-9
