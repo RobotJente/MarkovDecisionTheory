@@ -32,8 +32,8 @@ discount = 0.95
 
 
 transitions = np.zeros(shape=(2,2))
-transitions[0] = [0.99, 0.01]
-transitions[1] = [0.99, 0.01]
+transitions[0] = [0.1, 0.9]
+transitions[1] = [0.1, 0.9]
 
 dim_states = transitions.shape[0]
 # initialize v for each state
