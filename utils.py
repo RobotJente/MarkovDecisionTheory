@@ -6,20 +6,34 @@ def calc_cost_move_trailer(current_trailer_loc, future_trailer_loc):
     else:
         return 0
 
-# return the cost for using the trailer if the workers are at location worker_loc, and the trailer is at
-# location trailer_loc
 def calc_cost_use_trailer(worker_loc, trailer_loc, nodes):
     # If workers are at home location, no work done, so cost 0 regardless of trailer location
     if worker_loc == nodes[0]:
         return 0
     # If trailer at home and work force is not, then it costs 200
-    if trailer_loc is not nodes[0]:
-        if worker_loc == trailer_loc:
-            return 50
-        else:
-            return 100
     else:
-        return 200 # This line needs to be adjusted for the toy problem, or we need to adjust the toy problem
+        if trailer_loc != nodes[0]:
+            if worker_loc == trailer_loc:
+                return 50
+            else:
+                return 100
+        else:
+            return 200
+
+# return the cost for using the trailer if the workers are at location worker_loc, and the trailer is at
+# location trailer_loc
+# def calc_cost_use_trailer(worker_loc, trailer_loc, nodes):
+#     # If workers are at home location, no work done, so cost 0 regardless of trailer location
+#     if worker_loc == nodes[0]:
+#         return 0
+#     # If trailer at home and work force is not, then it costs 200
+#     if trailer_loc is not nodes[0]:
+#         if worker_loc == trailer_loc:
+#             return 50
+#         else:
+#             return 100
+#     else:
+#         return 200 # This line needs to be adjusted for the toy problem, or we need to adjust the toy problem
 
 # for each state (current_trailer_location, current_worker_location) and for each action compute the expercted immediate reward
 def calc_immediate_expected_reward(current_trailer_loc, current_worker_loc, action, workers_transition_probability, action_results, nodes):

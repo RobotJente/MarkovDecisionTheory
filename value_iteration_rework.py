@@ -46,6 +46,7 @@ def perform_val_it(transitions, actions, nodes, discount, epsilon, action_result
             helper_v[(init_state_worker, init_state_trailer)] = 1
 
     # value iteration algorithm
+    print(helper_v, "INIT")
     while (err > epsilon * (1 - discount) / (2 * discount)):
         n += 1
 
@@ -55,8 +56,8 @@ def perform_val_it(transitions, actions, nodes, discount, epsilon, action_result
 
         # state_index corresponds to the current state being evaluated, and runs from 0 to len(nodes)**2
         state_index = 0
-        for current_trailer_loc in nodes:
-            for current_worker_loc in nodes:
+        for current_worker_loc in nodes:
+            for current_trailer_loc in nodes:
                 reward_vector = []
 
                 for action in actions:
@@ -74,6 +75,8 @@ def perform_val_it(transitions, actions, nodes, discount, epsilon, action_result
                 # store the copies of v in a dictionary so it's easier to access specific states
                 helper_v[(current_worker_loc, current_trailer_loc)] = copy.deepcopy(v[state_index])
 
+                print("Helper v", helper_v)
+                print(v)
                 # we have now traversed a state
                 state_index += 1
         # track the convergence

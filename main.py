@@ -28,13 +28,13 @@ from value_iteration_rework import perform_val_it
 
 # build the transition matrix
 transitions = np.zeros(shape=(2,2))
-transitions[0] = [0.5, 0.5]
-transitions[1] = [0.3, 0.7]
+transitions[0] = [0.99, 0.01]
+transitions[1] = [0.99, 0.01]
 dim_states = transitions.shape[0]
 
 # initialization
 epsilon = 1e-9
-discount = 0.95
+discount = 0.99
 
 nodes = [i+1 for i in range(dim_states)]
 actions = ["Move to site " + str(i+1) for i in range(dim_states)]
@@ -43,5 +43,4 @@ actions = ["Move to site " + str(i+1) for i in range(dim_states)]
 action_results = {}
 for i in range(len(actions)):
     action_results[actions[i]] = i + 1
-
 perform_val_it(transitions, actions, nodes, discount, epsilon, action_results)
