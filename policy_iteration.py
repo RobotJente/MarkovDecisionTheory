@@ -1,3 +1,11 @@
+from utils import *
+import numpy as np
+
+
+#MODEL
+nodes = ("Site 1", "Site 2", "Site 3", "Site 4")
+actions = ("Move to site 1", "Move to site 2", "Move to site 3", "Move to site 4")  # Made this string to avoid possible errors with integer multiplication (these should function as tokens, not integers)
+
 #policy iteration
 #POLICY_ITERATION
 import copy
