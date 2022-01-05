@@ -104,6 +104,7 @@ def perform_val_it(transitions, actions, nodes, discount, epsilon, action_result
 
             # we have now traversed a state
     print("optimal policy is given by \n", pi)
+    print(helper_v)
 
 
 

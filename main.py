@@ -1,6 +1,32 @@
 from utils import *
 import numpy as np
 from value_iteration_rework import perform_val_it
+
+# build the transition matrix
+# transitions = np.zeros(shape=(2,2))
+# transitions[0] = [0.99, 0.01]
+# transitions[1] = [0.99, 0.01]
+transitions = np.zeros(shape=(4,4))
+transitions[0] = [0.1, 0.3, 0.3, 0.3]
+transitions[1] = [0, 0.5, 0.5, 0]
+transitions[2] = [0, 0, 0.8, 0.2]
+transitions[3] = [0.4, 0, 0, 0.6]
+dim_states = transitions.shape[0]
+
+# initialization
+epsilon = 1e-9
+discount = 0.95
+
+nodes = [i+1 for i in range(dim_states)]
+actions = ["Move to site " + str(i+1) for i in range(dim_states)]
+
+# encode a way to find the result of an action (in this case, the actions bring the trailer from site i to site j
+action_results = {}
+for i in range(len(actions)):
+    action_results[actions[i]] = i + 1
+perform_val_it(transitions, actions, nodes, discount, epsilon, action_results)
+
+
 #
 # # Parameters
 # discount = 0.95
@@ -26,21 +52,3 @@ from value_iteration_rework import perform_val_it
 
 ############################################################
 
-# build the transition matrix
-transitions = np.zeros(shape=(2,2))
-transitions[0] = [0.99, 0.01]
-transitions[1] = [0.99, 0.01]
-dim_states = transitions.shape[0]
-
-# initialization
-epsilon = 1e-9
-discount = 0.99
-
-nodes = [i+1 for i in range(dim_states)]
-actions = ["Move to site " + str(i+1) for i in range(dim_states)]
-
-# encode a way to find the result of an action (in this case, the actions bring the trailer from site i to site j
-action_results = {}
-for i in range(len(actions)):
-    action_results[actions[i]] = i + 1
-perform_val_it(transitions, actions, nodes, discount, epsilon, action_results)
