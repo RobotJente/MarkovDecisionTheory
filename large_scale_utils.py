@@ -21,14 +21,13 @@ for city_i in cities:
         r[city_i, city_j] = rhos[city_i]*m[city_i, city_j]
         c[city_i, city_j] = 1.2*m[city_i, city_j]
 
-
-# does the demand need to be generated each time epoch?
 def generate_demands(lams, cities):
     demands = {}
     for city_i in cities:
         for city_j in cities:
             demands[city_i, city_j] = [np.random.poisson(lams[city_i, city_j])]
     return demands
+
 
 print(m)
 print(generate_demands(lams, cities))
